@@ -7,27 +7,24 @@ using DG.Tweening;
 public class TargetSpawner : MonoBehaviour
 {
 
-    [field: SerializeField] private GameObject target;
+    [SerializeField] private GameObject target;
+    [SerializeField] private int targetCap;
+    [field: SerializeField] public TargetWaypointManager waypointManager { get; private set; }
     private GameObject targetClone;
 
     void Start()
     {
         SpawnTarget();
-        DestroyTarget();
-    }
-
-    private void DestroyTarget()
-    {
-        Destroy(targetClone, 2f);
     }
 
     private void SpawnTarget()
     {
         targetClone = Instantiate(target, this.transform.position, this.transform.rotation);
+        targetClone.transform.parent = this.transform;
     }
 
-    void Update()
+    public void DestroyTarget()
     {
-        
+        Destroy(targetClone, 2f);
     }
 }
