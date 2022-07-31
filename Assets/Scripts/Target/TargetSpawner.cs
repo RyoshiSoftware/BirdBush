@@ -35,6 +35,11 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision other) 
+    {
+        DestroyTarget();
+    }
+
     private void SpawnTarget()
     {
         targetCount ++;
