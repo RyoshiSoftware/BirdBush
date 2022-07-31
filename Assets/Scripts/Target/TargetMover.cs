@@ -7,7 +7,7 @@ using DG.Tweening;
 public class TargetMover : MonoBehaviour
 {
 
-    [SerializeField] private float movementSpeed;
+    [SerializeField] private float movementTime = 1f;
 
     private TargetSpawner targetSpawner;
     private TargetWaypointManager waypointManager;
@@ -21,6 +21,12 @@ public class TargetMover : MonoBehaviour
         GetPathToPoint();
     }
 
+    private void Update() 
+    {
+        Transform target = waypointManager.waypoints[waypointCounter];
+        transform.LookAt(target);
+    }
+
     private void GetPathToPoint()
     {
         currentWaypointPosition = waypointManager.waypoints[waypointCounter].position;
@@ -31,7 +37,7 @@ public class TargetMover : MonoBehaviour
 
     private void MoveToCurrentWaypoint()
     {
-        this.transform.DOMove(currentWaypointPosition, movementSpeed, false)
+        this.transform.DOMove(currentWaypointPosition, movementTime, false)
             .OnComplete(GetPathToPoint);
     }
 }
