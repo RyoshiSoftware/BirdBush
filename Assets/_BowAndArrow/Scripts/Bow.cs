@@ -2,5 +2,5 @@
 
 public class Bow : XRGrabInteractable
 {
-    // Empty
+    //Empty
 }

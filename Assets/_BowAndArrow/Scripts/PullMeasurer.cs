@@ -5,6 +5,7 @@ public class PullMeasurer : XRBaseInteractable
 {
     [SerializeField] private Transform start;
     [SerializeField] private Transform end;
+    [SerializeField] private AudioSource stringPullAudio;
 
     public float PullAmount { get; private set; } = 0.0f;
 
@@ -12,6 +13,7 @@ public class PullMeasurer : XRBaseInteractable
 
     protected override void OnSelectExited(SelectExitEventArgs args)
     {
+        stringPullAudio.Stop();
         base.OnSelectExited(args);
         PullAmount = 0;
     }
@@ -28,8 +30,16 @@ public class PullMeasurer : XRBaseInteractable
         }
     }
 
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
+        stringPullAudio.Play();
+    }
+
+
     private void UpdatePull()
     {
+
         // Use the interactor's position to calculate amount
         Vector3 interactorPosition = firstInteractorSelecting.transform.position;
 

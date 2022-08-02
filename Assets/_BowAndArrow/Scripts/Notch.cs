@@ -4,6 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Notch : XRSocketInteractor
 {
     [SerializeField, Range(0, 1)] private float releaseThreshold = 0.25f;
+    [SerializeField] AudioSource rockThrowAudio;
 
     public Bow Bow { get; private set; }
     public PullMeasurer PullMeasurer { get; private set; }
@@ -21,7 +22,7 @@ public class Notch : XRSocketInteractor
     {
         base.OnEnable();
         PullMeasurer.selectExited.AddListener(ReleaseArrow);
-    }
+    }   
 
     protected override void OnDisable()
     {
@@ -32,7 +33,11 @@ public class Notch : XRSocketInteractor
     public void ReleaseArrow(SelectExitEventArgs args)
     {
         if (hasSelection)
+        {
+            AudioSource throwablerockAudio = Instantiate(rockThrowAudio);
+            Destroy(throwablerockAudio, 3f); 
             interactionManager.SelectExit(this, firstInteractableSelected);
+        }
     }
 
     public override void ProcessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
