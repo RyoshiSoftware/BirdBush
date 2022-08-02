@@ -12,7 +12,8 @@ public class TargetSpawner : MonoBehaviour
     [SerializeField] private float timeRemaining = 3;
     [field: SerializeField] public TargetWaypointManager waypointManager { get; private set; }
     private GameObject targetClone;
-    private int targetCount = 0;
+    public int targetCount = 0;
+
 
     void Start()
     {
@@ -35,20 +36,11 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other) 
-    {
-        DestroyTarget();
-    }
 
     private void SpawnTarget()
     {
         targetCount ++;
-        targetClone = Instantiate(target, this.transform.position, this.transform.rotation);
-        targetClone.transform.parent = this.transform;
+        targetClone = Instantiate(target, this.transform.position, this.transform.rotation, this.transform);
     }
 
-    public void DestroyTarget()
-    {
-        Destroy(targetClone, 2f);
-    }
 }

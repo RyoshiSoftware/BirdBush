@@ -2,21 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class TargetMover : MonoBehaviour
 {
 
-    [SerializeField] private float movementTime = 1f;
+    [SerializeField] private float movementSpeed = 1f;
 
     private TargetSpawner targetSpawner;
     private TargetWaypointManager waypointManager;
     private int waypointCounter = 0;
     private Vector3 currentWaypointPosition;
+    private float flightSpeed;
 
     void Start()
     {
+        flightSpeed = movementSpeed * Time.deltaTime;
         targetSpawner = GetComponentInParent<TargetSpawner>();
+        Debug.Log(targetSpawner);
         waypointManager = targetSpawner.waypointManager;
         GetPathToPoint();
     }
@@ -25,6 +27,9 @@ public class TargetMover : MonoBehaviour
     {
         Transform target = waypointManager.waypoints[waypointCounter];
         transform.LookAt(target);
+        if (Vector3.Distance(transform.position, currentWaypointPosition) < 0.5f) { GetPathToPoint(); }
+        transform.position = Vector3.MoveTowards(transform.position, currentWaypointPosition, flightSpeed);
+
     }
 
     private void GetPathToPoint()
@@ -34,10 +39,18 @@ public class TargetMover : MonoBehaviour
         if (waypointCounter >= waypointManager.waypoints.Count) { waypointCounter = 0; }
         MoveToCurrentWaypoint();
     }
-
+ 
     private void MoveToCurrentWaypoint()
     {
-        this.transform.DOMove(currentWaypointPosition, movementTime, false)
-            .OnComplete(GetPathToPoint);
+        float flightSpeed = movementSpeed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter(Collider other) 
+    {
+        if (other.gameObject.tag == "Arrow")
+        {
+            Destroy(this.gameObject);
+            targetSpawner.targetCount--;
+        }
     }
 }
