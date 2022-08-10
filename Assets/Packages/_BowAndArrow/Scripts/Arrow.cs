@@ -56,6 +56,7 @@ public class Arrow : XRGrabInteractable
         DisablePhysics();
         ChildArrow(hit);
         CheckForHittable(hit);
+        Destroy(this.gameObject, 2f);
     }
 
     private void SetDirection()
